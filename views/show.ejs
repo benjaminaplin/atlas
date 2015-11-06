@@ -76,7 +76,8 @@
       // });
       var infowindow = new google.maps.InfoWindow({
       });
-      marker.addListener('click', function() {
+
+      marker.addListener('mouseover', function() {
         console.log('<%=e.link%>')
         infowindow.open(map, this)
         infowindow.setContent('<img src="<%=e.link%>">');
@@ -84,6 +85,12 @@
       // google.maps.event.addListener(marker, 'mouseout', function(event) {
       //   marker.info.open(map, marker);
       // });
+      marker.addListener('mouseout', function() {
+        console.log('<%=e.link%>')
+        infowindow.close(map, this)
+        infowindow.setContent('<img src="<%=e.link%>">');
+      });
+ 
    <%});%>
     };
   </script>
