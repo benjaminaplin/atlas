@@ -21,10 +21,15 @@ app.get('/data', function(req, res){
   var requestURL = "https://api.instagram.com/v1/tags/" + tag + "/media/recent?client_id=891b155cb8e64a41997c92f6b1f6a6fd"
   request.get(requestURL, function(err, response, body){
     var parsedJSON = JSON.parse(body);
-    console.log(parsedJSON.data)
-    parsedJSON.forEach(function(e){
-      console.log("parsed json", e.link)
+    var arrayInstagramObj = parsedJSON.data
+    arrayInstagramObj.forEach(function(e){
+      if(e.location !== null){
+        console.log("lat", e.location.latitude)
+        console.log("long", e.location.longitude)
+        console.log("name", e.location.name)
+        console.log("lat", e.location.id)
+      }
     })
     // res.render('show.ejs', {parsedJSON: parsedJSON})
-  // })
+  })
 })
