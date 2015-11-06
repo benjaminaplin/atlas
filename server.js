@@ -12,17 +12,19 @@ app.get("/", function(req,res){
 })
 
 app.listen(3000, function(){
-  console.log("Hey..i'm listening")
+  console.log("Hey..i'm listening on 3000")
 });
 
 app.get('/data', function(req, res){
-  var requestURL = "https://api.instagram.com/v1/tags/refugeecrisis/media/recent?client_id="
-
-
+  console.log("req.body", req.query.tags)
+  var tag = req.query.tags
+  var requestURL = "https://api.instagram.com/v1/tags/" + tag + "/media/recent?client_id=891b155cb8e64a41997c92f6b1f6a6fd"
   request.get(requestURL, function(err, response, body){
-  console.log("Hit route")
     var parsedJSON = JSON.parse(body);
-    console.log(parsedJSON)
-    res.render('show.ejs', {data: body})
-  })
+    console.log(parsedJSON.data)
+    parsedJSON.forEach(function(e){
+      console.log("parsed json", e.link)
+    })
+    // res.render('show.ejs', {parsedJSON: parsedJSON})
+  // })
 })

@@ -1,1 +1,15 @@
-<%=data%>
+<h2> Here are piccs !!</h2>
+<div class="piccontainer">
+  <ul> 
+    <% myParsedData.pic.forEach(function(e) {%>
+    <li>
+      <img src="<%=e.picurl%>">
+      <div class="buttons">
+        <form method="POST" action="/pics/<%=e.id%>?_method=DELETE">
+          <input type="submit" value="Delete me">
+        </form>
+      </div><!--buttons-->
+    </li>
+    <%  }); %>
+  </ul>
+</div><!--moviecontainer-->
