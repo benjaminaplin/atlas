@@ -17,8 +17,8 @@ app.listen(3000, function(){
 
 app.get('/data', function(req, res){
   var tag = req.query.tag
+  var requestURL = "https://api.instagram.com/v1/tags/" + tag + "/media/recent?client_id=891b155cb8e64a41997c92f6b1f6a6fd&count=100"
   console.log("tag", tag)
-  var requestURL = "https://api.instagram.com/v1/tags/" + tag + "/media/recent?client_id=891b155cb8e64a41997c92f6b1f6a6fd&count=100000"
   request.get(requestURL, function(err, response, body){
     var parsedJSON = JSON.parse(body);
     var arrayInstagramObj = parsedJSON.data
@@ -26,12 +26,15 @@ app.get('/data', function(req, res){
     arrayInstagramObj.forEach(function(e){
       if(e.location !== null){
         var newLinkObj = {}
-        var newObj = {lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
+        var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
         arrayObjForMap.push(newObj)
       }
     })
     // console.log("arrayLinks", arrayLinks)
 
-    res.render('show.ejs', {arrayObjForMap: arrayObjForMap})
+    res.render('show.ejs', {
+      arrayObjForMap: arrayObjForMap,
+      tag: tag
+    })
   })
 })

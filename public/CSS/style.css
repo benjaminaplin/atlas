@@ -8,6 +8,13 @@ html, body {
   height: 100%;
 }
 
+#search-bar-tag {
+  color: white;
+  margin-right: 350px;
+  padding: 10px 10px 10px 10px;
+}
+
+
 .has-form {
   position: absolute;
   top: 0;
@@ -21,6 +28,8 @@ html, body {
         height: 1.85rem; } }
 
 
+
+
 @media only screen and (min-width: 64.0625em) {
   .column, .columns {
       position: relative;
@@ -28,4 +37,11 @@ html, body {
       padding-right: 0.0375rem;
       float: left;
   }
+}
+@media only screen and (max-width: 1100px){
+  #search-bar-tag {
+    color: red;
+    display: none;
+  }
+  
 }

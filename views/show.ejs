@@ -32,6 +32,7 @@
   <section class="top-bar-section">
     <!-- Right Nav Section -->
     <ul class="right">
+      <li id="search-bar-tag">You are searching for <%=tag%></li>
       <li><a href="#">Button</a></li>
       <li class="has-dropdown">
         <a href="#">Dropdown</a>
@@ -57,13 +58,9 @@
     function initMap() {
       map = new google.maps.Map(document.getElementById('map'), {
       zoom: 2,
-      // center: {lat: -28, lng: 137}
       center: {lat: 35.17, lng: -41.48}
     })
-    // heatmap = new google.maps.visualization.HeatmapLayer({
-    //   data: getPoints(),
-    //   map: map
-    // });
+
    <% arrayObjForMap.forEach(function(e){%>
       var marker = new google.maps.Marker({
          position: {lat:<%=e.lat%>, lng:<%=e.lng%>},
@@ -71,9 +68,7 @@
          title: '<%=e.name%>',
          link: '<%=e.link%>'
        });
-      // marker.info = new google.maps.InfoWindow({
-      //   content: '<div id="content"><img src=<%=e.link%> width="150" height="150"/></div>'
-      // });
+
       var infowindow = new google.maps.InfoWindow({
       });
 
@@ -82,9 +77,7 @@
         infowindow.open(map, this)
         infowindow.setContent('<img src="<%=e.link%>">');
       });
-      // google.maps.event.addListener(marker, 'mouseout', function(event) {
-      //   marker.info.open(map, marker);
-      // });
+
       marker.addListener('mouseout', function() {
         console.log('<%=e.link%>')
         infowindow.close(map, this)
