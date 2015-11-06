@@ -29,8 +29,9 @@ app.get('/data', function(req, res){
     arrayInstagramObj.forEach(function(e){
       if(e.location !== null){
         var newLinkObj = {}
-        var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
+        var newObj = {text: e.caption.text, tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
         arrayObjForMap.push(newObj)
+        console.log(arrayObjForMap)
       }
     })
     request.get(pageinatedURL, function(err, response, body){
