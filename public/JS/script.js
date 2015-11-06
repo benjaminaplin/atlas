@@ -1,3 +1,4 @@
+console.log('script.js is linked')
  //$(function(){
   var map;
   function initMap() {
