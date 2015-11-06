@@ -68,24 +68,35 @@
       center: {lat: 35.17, lng: -41.48}
     })
 
+    // heatmap = new google.maps.visualization.HeatmapLayer({
+    //   data: getPoints(),
+    //   map: map
+    // });
+
    <% arrayObjForMap.forEach(function(e){%>
       var marker = new google.maps.Marker({
          position: {lat:<%=e.lat%>, lng:<%=e.lng%>},
          map: map,
-         title: '<%=e.name%>'
+         title: '<%=e.name%>',
+         link: '<%=e.link%>'
        });
 
-      marker.info = new google.maps.InfoWindow({
-        content: '<div id="content"><img src=<%=e.link%> width="150" height="150"/></div>'
+      // marker.info = new google.maps.InfoWindow({
+      //   content: '<div id="content"><img src=<%=e.link%> width="150" height="150"/></div>'
+      // });
+
+      var infowindow = new google.maps.InfoWindow({
       });
 
-      google.maps.event.addListener(marker, 'click', function(event) {
-        marker.info.open(map, marker);
+      marker.addListener('click', function() {
+        console.log('<%=e.link%>')
+        infowindow.open(map, this)
+        infowindow.setContent('<img src="<%=e.link%>">');
       });
 
-      google.maps.event.addListener(marker, 'mouseout', function(event) {
-        marker.info.open(map, marker);
-      });
+      // google.maps.event.addListener(marker, 'mouseout', function(event) {
+      //   marker.info.open(map, marker);
+      // });
 
    <%});%>
 
