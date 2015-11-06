@@ -25,11 +25,12 @@ app.get('/data', function(req, res){
     var arrayObjForMap = [];
     arrayInstagramObj.forEach(function(e){
       if(e.location !== null){
-        var newObj = {lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id}
+        var newObj = {lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
         arrayObjForMap.push(newObj)
       }
     })
     console.log("arrayObjForMap", arrayObjForMap)
+
     res.render('show.ejs', {arrayObjForMap: arrayObjForMap})
   })
 })
