@@ -28,7 +28,8 @@ app.get('/data', function(req, res){
     var arrayInstagramObj = parsedJSON.data
     arrayInstagramObj.forEach(function(e){
       if(e.location !== null){
-        var newObj = {lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
+        var newLinkObj = {}
+        var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
         arrayObjForMap.push(newObj)
       }
     })
@@ -38,7 +39,7 @@ app.get('/data', function(req, res){
       var arrayInstagramObj = parsedJSON.data
       arrayInstagramObj.forEach(function(e){
         if(e.location !== null){
-          var newObj = {lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
+          var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
           arrayObjForMap.push(newObj)
         }
       })
@@ -48,7 +49,7 @@ app.get('/data', function(req, res){
         var arrayInstagramObj = parsedJSON.data
         arrayInstagramObj.forEach(function(e){
           if(e.location !== null){
-            var newObj = {lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
+            var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
             arrayObjForMap.push(newObj)
           }
         })
@@ -58,7 +59,7 @@ app.get('/data', function(req, res){
           var arrayInstagramObj = parsedJSON.data
           arrayInstagramObj.forEach(function(e){
             if(e.location !== null){
-              var newObj = {lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
+              var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
               arrayObjForMap.push(newObj)
             }
           })
@@ -68,7 +69,7 @@ app.get('/data', function(req, res){
             var arrayInstagramObj = parsedJSON.data
             arrayInstagramObj.forEach(function(e){
               if(e.location !== null){
-                var newObj = {lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
+                var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
                 arrayObjForMap.push(newObj)
               }
             })
@@ -79,7 +80,7 @@ app.get('/data', function(req, res){
             var arrayInstagramObj = parsedJSON.data
             arrayInstagramObj.forEach(function(e){
               if(e.location !== null){
-                var newObj = {lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
+                var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
                 arrayObjForMap.push(newObj)
               }
             })
@@ -90,7 +91,7 @@ app.get('/data', function(req, res){
             var arrayInstagramObj = parsedJSON.data
             arrayInstagramObj.forEach(function(e){
               if(e.location !== null){
-                var newObj = {lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
+                var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
                 arrayObjForMap.push(newObj)
               }
             })
@@ -101,8 +102,8 @@ app.get('/data', function(req, res){
   })
 
     setTimeout(function(){
-      res.render('show.ejs', {arrayObjForMap: arrayObjForMap})
+      res.render('show.ejs', {arrayObjForMap: arrayObjForMap, tag: tag})
       console.log(arrayObjForMap.length)
       console.log(urls)
-    },4000)
+    },5000)
 })

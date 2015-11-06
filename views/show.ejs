@@ -27,13 +27,12 @@
         </form>
       </div>
     </li>
-
     <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
   </ul>
-
   <section class="top-bar-section">
     <!-- Right Nav Section -->
     <ul class="right">
+      <li id="search-bar-tag">You are searching for <%=tag%></li>
       <li><a href="#">Button</a></li>
       <li class="has-dropdown">
         <a href="#">Dropdown</a>
@@ -43,17 +42,13 @@
         </ul>
       </li>
     </ul>
-
     <!-- Left Nav Section -->
     <ul class="left">
 
     </ul>
   </section>
 </nav>
-
   <div id="map"></div>
-
-
   <script src="JS/vendor/jquery.js"></script>
   <script src="JS/foundation.min.js"></script>
   <script>
@@ -64,7 +59,6 @@
     function initMap() {
       map = new google.maps.Map(document.getElementById('map'), {
       zoom: 2,
-      // center: {lat: -28, lng: 137}
       center: {lat: 35.17, lng: -41.48}
     })
 
@@ -72,27 +66,28 @@
       var marker = new google.maps.Marker({
          position: {lat:<%=e.lat%>, lng:<%=e.lng%>},
          map: map,
-         title: '<%=e.name%>'
+         title: '<%=e.name%>',
+         link: '<%=e.link%>'
        });
 
-      marker.info = new google.maps.InfoWindow({
-        content: '<div id="content"><img src=<%=e.link%> width="150" height="150"/></div>'
+      var infowindow = new google.maps.InfoWindow({
       });
 
-      google.maps.event.addListener(marker, 'click', function(event) {
-        marker.info.open(map, marker);
+      marker.addListener('mouseover', function() {
+        console.log('<%=e.link%>')
+        infowindow.open(map, this)
+        infowindow.setContent('<img src="<%=e.link%>">');
       });
 
-      google.maps.event.addListener(marker, 'mouseout', function(event) {
-        marker.info.open(map, marker);
+      marker.addListener('mouseout', function() {
+        console.log('<%=e.link%>')
+        infowindow.close(map, this)
+        infowindow.setContent('<img src="<%=e.link%>">');
       });
 
    <%});%>
-
     };
-
   </script>
-
   <script src="https://maps.googleapis.com/maps/api/js?&callback=initMap" async defer></script>
 </body>
 </html>
