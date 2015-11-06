@@ -1,15 +1,86 @@
-<h2> Here are piccs !!</h2>
-<div class="piccontainer">
-  <ul> 
-    <% myParsedData.pic.forEach(function(e) {%>
-    <li>
-      <img src="<%=e.picurl%>">
-      <div class="buttons">
-        <form method="POST" action="/pics/<%=e.id%>?_method=DELETE">
-          <input type="submit" value="Delete me">
-        </form>
-      </div><!--buttons-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="css/foundation.css" />
+    <script src="js/vendor/modernizr.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="/CSS/style.css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+<nav class="top-bar" data-topbar role="navigation">
+  <ul class="title-area">
+    <li class="name">
+      <h1><a href="#">Atlas</a></h1>
     </li>
-    <%  }); %>
+    <li class="has-form">
+      <div class="row collapse">
+        <form method="GET" action="/data">
+          <div class="large-8 small-9 columns">
+            <input name="tag" type="text" placeholder="Find Tags">
+          </div>
+          <div class="large-4 small-3 columns">
+            <input type="submit" class="alert button expand" value="Search">
+          </div>
+        </form>
+      </div>
+    </li>
+
+    <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
   </ul>
-</div><!--moviecontainer-->
+
+  <section class="top-bar-section">
+    <!-- Right Nav Section -->
+    <ul class="right">
+      <li><a href="#">Button</a></li>
+      <li class="has-dropdown">
+        <a href="#">Dropdown</a>
+        <ul class="dropdown">
+          <li><a href="#">link</a></li>
+          <li><a href="#">link</a></li>
+        </ul>
+      </li>
+    </ul>
+
+    <!-- Left Nav Section -->
+    <ul class="left">
+      
+    </ul>
+  </section>
+</nav>
+
+  <div id="map"></div>
+    
+
+  <script src="js/vendor/jquery.js"></script>
+  <script src="js/foundation.min.js"></script>
+  <script>
+   $(document).foundation();
+  </script>
+  <script>
+    var map;
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 2,
+      // center: {lat: -28, lng: 137}
+      center: {lat: 35.17, lng: -41.48}
+    })
+        
+   <% arrayObjForMap.forEach(function(e){%>
+      var marker = new google.maps.Marker({
+         position: {lat:<%=e.lat%>, lng:<%=e.lng%>},
+         map: map,
+         title: '<%=e.name%>'
+       });
+        
+
+    <%});%>
+
+    };
+
+  </script>
+
+  <script src="https://maps.googleapis.com/maps/api/js?&callback=initMap" async defer></script>
+</body>
+</html>

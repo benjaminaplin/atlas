@@ -16,20 +16,20 @@ app.listen(3000, function(){
 });
 
 app.get('/data', function(req, res){
-  console.log("req.body", req.query.tags)
-  var tag = req.query.tags
+  var tag = req.query.tag
+  console.log("tag", tag)
   var requestURL = "https://api.instagram.com/v1/tags/" + tag + "/media/recent?client_id=891b155cb8e64a41997c92f6b1f6a6fd"
   request.get(requestURL, function(err, response, body){
     var parsedJSON = JSON.parse(body);
     var arrayInstagramObj = parsedJSON.data
+    var arrayObjForMap = [];
     arrayInstagramObj.forEach(function(e){
       if(e.location !== null){
-        console.log("lat", e.location.latitude)
-        console.log("long", e.location.longitude)
-        console.log("name", e.location.name)
-        console.log("lat", e.location.id)
+        var newObj = {lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id}
+        arrayObjForMap.push(newObj)
       }
     })
-    // res.render('show.ejs', {parsedJSON: parsedJSON})
+    console.log("arrayObjForMap", arrayObjForMap)
+    res.render('show.ejs', {arrayObjForMap: arrayObjForMap})
   })
 })
