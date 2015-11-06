@@ -13,7 +13,16 @@ html, body {
   margin-right: 350px;
   padding: 10px 10px 10px 10px;
 }
+#tbname {
+  background-color: #3E50B4;
+  color: white;
+}
 
+#trend {
+  margin-top: -620px;
+  margin-left: 10px;
+  position: fixed;
+}
 
 .has-form {
   position: absolute;
@@ -43,5 +52,5 @@ html, body {
     color: red;
     display: none;
   }
-  
+
 }
