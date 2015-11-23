@@ -4,6 +4,11 @@ html, body {
   padding: 0;
 }
 
+#tag {
+  color: white;
+  padding: 5px 5px 5px 5px;
+}
+
 #map {
   height: 100%;
 }
@@ -23,6 +28,15 @@ html, body {
   margin-left: 10px;
   position: fixed;
 }
+
+
+nav.top-bar {
+text-align:center;
+}
+section.top-bar-section {
+display: inline-block;
+}
+
 
 .has-form {
   position: absolute;

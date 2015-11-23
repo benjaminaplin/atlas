@@ -1,24 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" ng-app>
   <head>
     <meta charset="utf-8">
     <title></title>
     <link rel="stylesheet" href="CSS/foundation.css" />
-    <script src="JS/vendor/modernizr.js"></script>
+    <script src="js/vendor/modernizr.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js" charset="utf-8"></script>
-    <link rel="stylesheet" href="/CSS/style.css" media="screen" title="no title" charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.1/angular.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="/css/style.css" media="screen" title="no title" charset="utf-8">
   </head>
   <body>
 <nav class="top-bar" data-topbar role="navigation">
   <ul class="title-area">
     <li class="name">
-      <h1><a href="#">Atlas</a></h1>
+      <h1><a href="#">ahhh</a></h1>
     </li>
     <li class="has-form">
       <div class="row collapse">
         <form method="GET" action="/data">
           <div class="large-8 small-9 columns">
-            <input name="tag" type="text" placeholder="Find Tags">
+            <input name="tag" type="text" ng-model="tag"placeholder="Find Tags">
           </div>
           <div class="large-4 small-3 columns">
             <input type="submit" class="alert button expand" value="Search">
@@ -26,74 +27,31 @@
         </form>
       </div>
     </li>
-     <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+
     <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
   </ul>
 
   <section class="top-bar-section">
     <!-- Right Nav Section -->
     <ul class="right">
-      <li class="has-dropdown">
-        <a href="#">Trending</a>
-        <ul class="dropdown">
-          <li><a href="#">nachos</a></li>
-          <li><a href="#">kittens</a></li>
-        </ul>
+      <li>
+        <div ng-model="tag">
+            <h1 id="tag">{{tag}}</h1>
+        </div>
       </li>
     </ul>
 
     <!-- Left Nav Section -->
     <ul class="left">
-
+  
     </ul>
   </section>
 </nav>
 
   <div id="map"></div>
 
-  <table id="trend">
-    <thead>
-      <tr>
-        <th width="200">Trending Topics</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>SyrianRefugees</td>
-      </tr>
-      <tr>
-        <td>conflict</td>
-      </tr>
-      <tr>
-        <td>protests</td>
-      </tr>
-      <tr>
-        <td>hillary2016</td>
-      </tr>
-      <tr>
-        <td>blacklives</td>
-      </tr>
-      <tr>
-        <td>refugeeswelcome</td>
-      </tr>
-      <tr>
-        <td>nepalearthquake</td>
-      </tr>
-      <tr>
-        <td>nasa</td>
-      </tr>
-      <tr>
-        <td>feelthebern</td>
-      </tr>
-      <tr>
-        <td>nachos</td>
-      </tr>
-    </tbody>
-  </table>
-
-
-  <script src="JS/vendor/jquery.js"></script>
-  <script src="JS/foundation.min.js"></script>
+  <script src="js/vendor/jquery.js"></script>
+  <script src="js/foundation.min.js"></script>
   <script>
    $(document).foundation();
   </script>

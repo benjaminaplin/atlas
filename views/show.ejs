@@ -110,8 +110,7 @@
 
       var infowindow = new google.maps.InfoWindow({
       });
-      var text = <%=e.link.match(/\w+/g)%>
-      debugger
+
       marker.addListener('mouseover', function() {
         infowindow.open(map, this)
         infowindow.setContent('<img src="<%=e.link%>">');
