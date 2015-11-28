@@ -3,8 +3,20 @@ var request = require('request');
 var ejs = require('ejs');
 var app = express()
 var Q = require('q');
-// var DeferredFactory = require('./DeferredFactory');
-// var DeferredGet = DeferredFactory( request.get, request );
+
+function removeSpaces(str){
+ var newStr = str.split("");
+ var itemToRemove;
+ newStr.forEach(function(e){
+  if(e === ' '){
+   itemToRemove = newStr.indexOf(e);
+   newStr.splice(itemToRemove, 1);
+   }  
+ })
+ newStr = newStr.join('')
+ console.log('newStr', newStr);
+ return newStr;
+}
 
 app.set("view-engine", 'ejs')
 app.use( express.static( 'public') );
@@ -20,6 +32,9 @@ app.listen(process.env.PORT || 3000, function(){
 app.get('/data', function(req, res){
   var apiKey = '891b155cb8e64a41997c92f6b1f6a6fd';
   var tag = req.query.tag;
+  console.log(tag)
+  tag = removeSpaces(tag)
+  console.log(tag)
   var requestURL = "https://api.instagram.com/v1/tags/" + tag + "/media/recent?client_id=" + apiKey;
   var urls = [];
   var arrayObjForMap = [];
