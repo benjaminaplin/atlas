@@ -3,20 +3,9 @@ var request = require('request');
 var ejs = require('ejs');
 var app = express()
 var Q = require('q');
+var DeferredFactory = require('./DeferredFactory');
 
-function removeSpaces(str){
- var newStr = str.split("");
- var itemToRemove;
- newStr.forEach(function(e){
-  if(e === ' '){
-   itemToRemove = newStr.indexOf(e);
-   newStr.splice(itemToRemove, 1);
-   }  
- })
- newStr = newStr.join('')
- console.log('newStr', newStr);
- return newStr;
-}
+var DeferredGet = DeferredFactory( request.get, request );
 
 app.set("view-engine", 'ejs')
 app.use( express.static( 'public') );
@@ -30,97 +19,159 @@ app.listen(process.env.PORT || 3000, function(){
 });
 
 app.get('/data', function(req, res){
-  var apiKey = '891b155cb8e64a41997c92f6b1f6a6fd';
-  var tag = req.query.tag;
-  console.log(tag)
-  tag = removeSpaces(tag)
-  console.log(tag)
-  var requestURL = "https://api.instagram.com/v1/tags/" + tag + "/media/recent?client_id=" + apiKey;
-  var urls = [];
+  var tag = req.query.tag
+  console.log("tag", tag)
+  var requestURL = "https://api.instagram.com/v1/tags/" + tag + "/media/recent?client_id=891b155cb8e64a41997c92f6b1f6a6fd";
   var arrayObjForMap = [];
-  var pageinatedURL;
+  var urls = []
 
-  request.get(requestURL, function(err, response, body){
-    var parsedJSON = JSON.parse(body);
-    pageinatedURL = parsedJSON.pagination.next_url
-    var arrayInstagramObj = parsedJSON.data
-    arrayInstagramObj.forEach(function(e){
-      if(e.location !== null){
-        var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
-        arrayObjForMap.push(newObj)
-      }
-    })
-    request.get(pageinatedURL, function(err, response, body){
+//   Q.fcall(function(){
+//       var parsedJSON = JSON.parse(body);
+//       console.log('parsedJSON', parsedJSON)
+//       var pageinatedURL = parsedJSON.pagination.next_url;
+//       var arrayInstagramObj = parsedJSON.data;
+//       arrayInstagramObj.forEach(function(e){
+//         if(e.location !== null){
+//           var newLinkObj = {};
+//           var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url};
+//           arrayObjForMap.push(newObj);
+//         }
+//       })
+//       console.log( 'pageinatedURL', pageinatedURL);
+//       return arrayObjForMap
+//     // }).then(function(){
+//     res.render('show.ejs', {arrayObjForMap: arrayObjForMap})
+//     console.log("Found this many pics w geoloc:", arrayObjForMap.length)
+//   })
+// });
+
+
+  // DeferredGet( requestURL ).then(function( err, response, body ) {
+  //   var parsedJSON = JSON.parse(body);
+  //       var pageinatedURL = parsedJSON.pagination.next_url
+  //       var arrayInstagramObj = parsedJSON.data
+  //       arrayInstagramObj.forEach(function(e){
+  //         if(e.location !== null){
+  //           var newLinkObj = {}
+  //           var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
+  //           arrayObjForMap.push(newObj)
+  //         }
+  //     })
+  //     console.log( 'pageinatedURL', pageinatedURL);
+  // });
+
+///---WORKS--------->
+//   request.get(requestURL, function(err, response, body){
+//     var parsedJSON = JSON.parse(body);
+//     var pageinatedURL = parsedJSON.pagination.next_url
+//     var arrayInstagramObj = parsedJSON.data
+//     arrayInstagramObj.forEach(function(e){
+//       if(e.location !== null){
+//         var newLinkObj = {}
+//         var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
+//         arrayObjForMap.push(newObj)
+//       }
+//     })
+//    res.render('show.ejs', {arrayObjForMap: arrayObjForMap, tag: tag})
+//     console.log("Found this many pics w geoloc:", arrayObjForMap.length) 
+//   });
+
+// });
+///<------------------
+  Q.fcall(function(){
+    request.get(requestURL, function(err, response, body){
       var parsedJSON = JSON.parse(body);
-      pageinatedURL = parsedJSON.pagination.next_url
+      var pageinatedURL = parsedJSON.pagination.next_url
       var arrayInstagramObj = parsedJSON.data
       arrayInstagramObj.forEach(function(e){
         if(e.location !== null){
+          var newLinkObj = {}
           var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
           arrayObjForMap.push(newObj)
         }
       })
-      request.get(pageinatedURL, function(err, response, body){
-        var parsedJSON = JSON.parse(body);
-        pageinatedURL = parsedJSON.pagination.next_url
-        var arrayInstagramObj = parsedJSON.data
-        arrayInstagramObj.forEach(function(e){
-          if(e.location !== null){
-            var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
-            arrayObjForMap.push(newObj)
-          }
-        })
-        request.get(pageinatedURL, function(err, response, body){
-          var parsedJSON = JSON.parse(body);
-          pageinatedURL = parsedJSON.pagination.next_url
-          var arrayInstagramObj = parsedJSON.data
-          arrayInstagramObj.forEach(function(e){
-            if(e.location !== null){
-              var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
-              arrayObjForMap.push(newObj)
-            }
-          })
-          request.get(pageinatedURL, function(err, response, body){
-            var parsedJSON = JSON.parse(body);
-            pageinatedURL = parsedJSON.pagination.next_url
-            var arrayInstagramObj = parsedJSON.data
-            arrayInstagramObj.forEach(function(e){
-              if(e.location !== null){
-                var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
-                arrayObjForMap.push(newObj)
-              }
-            })
-          })
-          request.get(pageinatedURL, function(err, response, body){
-            var parsedJSON = JSON.parse(body);
-            pageinatedURL = parsedJSON.pagination.next_url
-            var arrayInstagramObj = parsedJSON.data
-            arrayInstagramObj.forEach(function(e){
-              if(e.location !== null){
-                var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
-                arrayObjForMap.push(newObj)
-              }
-            })
-          })
-          request.get(pageinatedURL, function(err, response, body){
-            var parsedJSON = JSON.parse(body);
-            var pageinatedURL = parsedJSON.pagination.next_url
-            var arrayInstagramObj = parsedJSON.data
-            arrayInstagramObj.forEach(function(e){
-              if(e.location !== null){
-                var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
-                arrayObjForMap.push(newObj)
-              }
-            })
-            res.render('show.ejs', {arrayObjForMap: arrayObjForMap, tag: tag})
-            console.log("Found this many pics w geoloc:", arrayObjForMap.length)
-          })
-        })
-      })
+     res.render('show.ejs', {arrayObjForMap: arrayObjForMap, tag: tag})
+      console.log("Found this many pics w geoloc:", arrayObjForMap.length) 
     })
-  })
-})
+      return tag;
+  }).then(function(tag){
 
+      console.log(tag, "all done")
+  })
+});
+  //   request.get(pageinatedURL, function(err, response, body){
+  //     var parsedJSON = JSON.parse(body);
+  //     var pageinatedURL = parsedJSON.pagination.next_url
+  //     var arrayInstagramObj = parsedJSON.data
+  //     arrayInstagramObj.forEach(function(e){
+  //       if(e.location !== null){
+  //         var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
+  //         arrayObjForMap.push(newObj)
+  //       }
+  //     })
+  //     request.get(pageinatedURL, function(err, response, body){
+  //       var parsedJSON = JSON.parse(body);
+  //       var pageinatedURL = parsedJSON.pagination.next_url
+  //       var arrayInstagramObj = parsedJSON.data
+  //       arrayInstagramObj.forEach(function(e){
+  //         if(e.location !== null){
+  //           var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
+  //           arrayObjForMap.push(newObj)
+  //         }
+  //       })
+  //       request.get(pageinatedURL, function(err, response, body){
+  //         var parsedJSON = JSON.parse(body);
+  //         var pageinatedURL = parsedJSON.pagination.next_url
+  //         var arrayInstagramObj = parsedJSON.data
+  //         arrayInstagramObj.forEach(function(e){
+  //           if(e.location !== null){
+  //             var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
+  //             arrayObjForMap.push(newObj)
+  //           }
+  //         })
+  //         request.get(pageinatedURL, function(err, response, body){
+  //           var parsedJSON = JSON.parse(body);
+  //           var pageinatedURL = parsedJSON.pagination.next_url
+  //           var arrayInstagramObj = parsedJSON.data
+  //           arrayInstagramObj.forEach(function(e){
+  //             if(e.location !== null){
+  //               var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
+  //               arrayObjForMap.push(newObj)
+  //             }
+  //           })
+  //         })
+  //         request.get(pageinatedURL, function(err, response, body){
+  //           var parsedJSON = JSON.parse(body);
+  //           var pageinatedURL = parsedJSON.pagination.next_url
+  //           var arrayInstagramObj = parsedJSON.data
+  //           arrayInstagramObj.forEach(function(e){
+  //             if(e.location !== null){
+  //               var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
+  //               arrayObjForMap.push(newObj)
+  //             }
+  //           })
+  //         })
+  //         request.get(pageinatedURL, function(err, response, body){
+  //           var parsedJSON = JSON.parse(body);
+  //           var pageinatedURL = parsedJSON.pagination.next_url
+  //           var arrayInstagramObj = parsedJSON.data
+  //           arrayInstagramObj.forEach(function(e){
+  //             if(e.location !== null){
+  //               var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
+  //               arrayObjForMap.push(newObj)
+  //             }
+  //           })
+  //         })
+  //       })
+  //     })
+  //   })
+  // })
+
+    // setTimeout(function(){
+    //   res.render('show.ejs', {arrayObjForMap: arrayObjForMap, tag: tag})
+    //   console.log(arrayObjForMap.length)
+    // },5000)
+// })
 
 
 
