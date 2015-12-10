@@ -1,6 +1,7 @@
 var express = require('express');
 var request = require('request');
-var ejs = require('ejs');
+var morgan = require('morgan');
+var serveStatic = require('serve-static');
 var app = express()
 
 function removeSpaces(str){
@@ -16,18 +17,12 @@ function removeSpaces(str){
  return newStr;
 }
 
-app.set("view-engine", 'ejs')
-app.use( express.static( 'public') );
+app.use(serveStatic(__dirname + '/public'))
 
-app.get("/", function(req,res){
-  res.render('index.ejs')
-})
+var router = express.Router();
 
-app.listen(process.env.PORT || 3000, function(){
-  console.log("Hey..i'm listening on 3000")
-});
-
-app.get('/data', function(req, res){
+router.get('/data', function(req, res){
+  console.log('hit router!')
   var apiKey = '891b155cb8e64a41997c92f6b1f6a6fd';
   var tag = req.query.tag;
   tag = removeSpaces(tag)
@@ -108,7 +103,7 @@ app.get('/data', function(req, res){
                 arrayObjForMap.push(newObj)
               }
             })
-            res.render('show.ejs', {arrayObjForMap: arrayObjForMap, tag: tag})
+            res.send({arrayObjForMap: arrayObjForMap, tag: tag})
             console.log(tag + " has " + arrayObjForMap.length + " many pics w geolocation")
           })
         })
@@ -117,6 +112,10 @@ app.get('/data', function(req, res){
   })
 })
 
+app.use('/api', router);
 
+app.listen(process.env.PORT || 3000, function(){
+  console.log("Hey..i'm listening on 3000")
+});
 
 
