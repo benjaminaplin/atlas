@@ -86,35 +86,35 @@ app.get('/data', function(req, res){
                 arrayObjForMap.push(newObj)
               }
             })
-          })
-          request.get(pageinatedURL, function(err, response, body){
-            var parsedJSON = JSON.parse(body);
-            pageinatedURL = parsedJSON.pagination.next_url
-            var arrayInstagramObj = parsedJSON.data
-            arrayInstagramObj.forEach(function(e){
-              if(e.location !== null){
-                var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
-                arrayObjForMap.push(newObj)
-              }
+            request.get(pageinatedURL, function(err, response, body){
+              var parsedJSON = JSON.parse(body);
+              pageinatedURL = parsedJSON.pagination.next_url
+              var arrayInstagramObj = parsedJSON.data
+              arrayInstagramObj.forEach(function(e){
+                if(e.location !== null){
+                  var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
+                  arrayObjForMap.push(newObj)
+                }
+              })
+              request.get(pageinatedURL, function(err, response, body){
+                var parsedJSON = JSON.parse(body);
+                var pageinatedURL = parsedJSON.pagination.next_url
+                var arrayInstagramObj = parsedJSON.data
+                arrayInstagramObj.forEach(function(e){
+                  if(e.location !== null){
+                    var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
+                    arrayObjForMap.push(newObj)
+                  }
+                })
+                res.render('show.ejs', {arrayObjForMap: arrayObjForMap, tag: tag})
+                console.log(tag + " has " + arrayObjForMap.length + " many pics w geolocation")
             })
-          })
-          request.get(pageinatedURL, function(err, response, body){
-            var parsedJSON = JSON.parse(body);
-            var pageinatedURL = parsedJSON.pagination.next_url
-            var arrayInstagramObj = parsedJSON.data
-            arrayInstagramObj.forEach(function(e){
-              if(e.location !== null){
-                var newObj = {tag: tag, lat: e.location.latitude, lng: e.location.longitude, name: e.location.name, locId: e.location.id, link: e.images.thumbnail.url}
-                arrayObjForMap.push(newObj)
-              }
-            })
-            res.render('show.ejs', {arrayObjForMap: arrayObjForMap, tag: tag})
-            console.log(tag + " has " + arrayObjForMap.length + " many pics w geolocation")
           })
         })
       })
     })
   })
+})
 })
 
 
